@@ -13,22 +13,16 @@ public class OrderedArray {
 
     public void insert(int x) {
         if (count == arr.length) {
-            resize(Math.max(1, arr.length * 2));
+            resize(arr.length * 2 + 1);   
         }
-
-        int low = 0, high = count;
-        while (low < high) {
-            int mid = (low + high) >>> 1;
-            if (arr[mid] <= x) {
-                low = mid + 1;
-            } else {
-                high = mid;
-            }
+        int pos = 0;
+        while (pos < count && arr[pos] < x) {
+            pos++;                      
         }
-        for (int i = count; i > low; i--) {
-            arr[i] = arr[i - 1];
+        for (int i = count; i > pos; i--) {
+            arr[i] = arr[i - 1];        
         }
-        arr[low] = x;
+        arr[pos] = x;
         count++;
     }
 
@@ -37,13 +31,11 @@ public class OrderedArray {
         if (index == -1) {
             return false;
         }
-
         for (int i = index; i < count - 1; i++) {
-            arr[i] = arr[i + 1];
+            arr[i] = arr[i + 1];         
         }
         arr[count - 1] = null;
         count--;
         return true;
     }
-
 }
