@@ -19,6 +19,38 @@ public class UnorderedArray {
         arr[numItems] = x;
         numItems++;
     }
+
+    public boolean delete(int x){
+        for (int i = 0; i < numItems; i++){
+            if (arr[i] == x){
+                for(int j = i; j < numItems - 1; j++){
+                    arr[j] = arr[j + 1];
+                }
+
+                arr[numItems -1] = null;
+                numItems--;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int find(int x){
+        for (int i = 0; i < numItems; i++){
+            if (arr[i] == x) {
+                return 1;
+            }
+        }
+        return -1;
+    }
+
+    public Integer get(int index){
+        if(index < 0 || index >= arr.length){
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds  ");
+        }
+        return arr[index];
+    }
+
     public void resize(int newSize) {
         Integer[] newArr = new Integer[newSize];
         int limit = Math.min(numItems, newSize);
