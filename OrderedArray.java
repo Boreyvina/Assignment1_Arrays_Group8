@@ -3,6 +3,7 @@ public class OrderedArray {
     private Integer[] arr;
     private int count;
 
+    // O(n): creates an array of initialSize, all slots start as null
     public OrderedArray(int initialSize) {
         if (initialSize < 0) {
             throw new IllegalArgumentException("Size cannot be negative: " + initialSize);
@@ -11,6 +12,7 @@ public class OrderedArray {
         count = 0;
     }
 
+    // O(n): finding the spot is a simple scan, and shifting elements right to open a gap is O(n)
     public void insert(int x) {
         if (count == arr.length) {
             resize(arr.length * 2 + 1);
@@ -26,6 +28,7 @@ public class OrderedArray {
         count++;
     }
 
+    // O(n): find() is O(log n), but shifting elements left to close the gap is O(n)
     public boolean delete(int x) {
         int index = find(x);
         if (index == -1) {
@@ -39,6 +42,7 @@ public class OrderedArray {
         return true;
     }
 
+    // O(log n): binary search cuts the search range in half each step
     public int find(int x) {
         int low = 0;
         int high = count - 1;
@@ -54,11 +58,10 @@ public class OrderedArray {
                 high = middle - 1;
             }
         }
-
         return -1;
     }
 
-
+    // O(1): direct array access by index
     public Integer get(int index) {
         if (index < 0 || index >= arr.length) {
             throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
@@ -66,6 +69,24 @@ public class OrderedArray {
         return arr[index];
     }
 
+    // O(1): just reads the array length
+    public int size() {
+        return arr.length;
+    }
+
+    // O(n): loops through every slot to count the non-null values
+    public int count() {
+        int count = 0;
+
+        for (Integer value : arr) {
+            if (value != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // O(n): copies up to newSize elements into a new array
     public void resize(int newSize) {
         Integer[] newArr = new Integer[newSize];
         int limit = Math.min(count, newSize);
@@ -76,19 +97,5 @@ public class OrderedArray {
         count = limit;
     }
 
-    public int size() {
-        return arr.length;
-    }
 
-    public int count() {
-        int count = 0;
-
-        for (Integer value : arr) {
-            if (value != null) {
-                count++;
-            }
-        }
-
-        return count;
-    }
 }
