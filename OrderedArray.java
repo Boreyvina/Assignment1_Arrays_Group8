@@ -58,6 +58,14 @@ public class OrderedArray {
         return -1;
     }
 
+
+    public Integer get(int index) {
+        if (index < 0 || index >= arr.length) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+        }
+        return arr[index];
+    }
+
     public void resize(int newSize) {
         Integer[] newArr = new Integer[newSize];
         int limit = Math.min(count, newSize);
@@ -70,7 +78,6 @@ public class OrderedArray {
 
     public int size() {
         return arr.length;
-
     }
 
     public int count() {
