@@ -10,6 +10,7 @@ public class UnorderedArray {
         arr = new Integer[size];
         numItems = 0;
     }
+    // Time Complexity O(n)
 
     public void insert(int x) {
         if (numItems == arr.length) {
@@ -19,6 +20,7 @@ public class UnorderedArray {
         arr[numItems] = x;
         numItems++;
     }
+    // Time Complexity: O(1) average, O(n) worst case
 
     public boolean delete(int x) {
         for (int i = 0; i < numItems; i++) {
@@ -34,6 +36,7 @@ public class UnorderedArray {
         }
         return false;
     }
+    // Time Complexity: O(n)
 
     public int find(int x) {
         for (int i = 0; i < numItems; i++) {
@@ -43,7 +46,7 @@ public class UnorderedArray {
         }
         return -1;
     }
-
+    // Time Complexity: O(n)
 
     public Integer get(int index) {
         if (index < 0 || index >= arr.length) {
@@ -51,6 +54,7 @@ public class UnorderedArray {
         }
         return arr[index];
     }
+    // Time Complexity: O(1)
 
     public void resize(int newSize) {
         Integer[] newArr = new Integer[newSize];
@@ -61,4 +65,22 @@ public class UnorderedArray {
         arr = newArr;
         numItems = limit;
     }
+    // Time Complexity: O(n)
+    public int size() {
+        return arr.length;
+    }
+// Time Complexity: O(1)
+
+    public int count() {
+        int count = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != null) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+// Time Complexity: O(n)
 }
