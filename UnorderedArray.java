@@ -3,7 +3,7 @@ public class UnorderedArray {
     private Integer[] arr;
     private int numItems;
 
-    public UnorderedArray(int size){
+    public UnorderedArray(int size) {
         if (size < 0) {
             throw new IllegalArgumentException("Size cannot be negative");
         }
@@ -20,14 +20,14 @@ public class UnorderedArray {
         numItems++;
     }
 
-    public boolean delete(int x){
-        for (int i = 0; i < numItems; i++){
-            if (arr[i] == x){
-                for(int j = i; j < numItems - 1; j++){
+    public boolean delete(int x) {
+        for (int i = 0; i < numItems; i++) {
+            if (arr[i] == x) {
+                for (int j = i; j < numItems - 1; j++) {
                     arr[j] = arr[j + 1];
                 }
 
-                arr[numItems -1] = null;
+                arr[numItems - 1] = null;
                 numItems--;
                 return true;
             }
@@ -35,18 +35,19 @@ public class UnorderedArray {
         return false;
     }
 
-    public int find(int x){
-        for (int i = 0; i < numItems; i++){
+    public int find(int x) {
+        for (int i = 0; i < numItems; i++) {
             if (arr[i] == x) {
-                return 1;
+                return i;
             }
         }
         return -1;
     }
 
-    public Integer get(int index){
-        if(index < 0 || index >= arr.length){
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds  ");
+
+    public Integer get(int index) {
+        if (index < 0 || index >= arr.length) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
         }
         return arr[index];
     }
