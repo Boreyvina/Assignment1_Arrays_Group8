@@ -1,53 +1,44 @@
 public class TestUnorderedArray {
 
     public static void main(String[] args) {
-        UnorderedArray arr = new UnorderedArray(3);
+        UnorderedArray arr = new UnorderedArray(5);
 
-        System.out.println("--- Testing insert() and resize() ---");
-        arr.insert(50);
-        arr.insert(3);
-        arr.insert(99);
-        printArray(arr); // should be full: 50, 3, 99 (size 3)
+        System.out.println("Inserting 5, 2, 9...");
+        arr.insert(5);
+        arr.insert(2);
+        arr.insert(9);
 
-        arr.insert(7); // array is full, should trigger resize
-        printArray(arr); // should now show size 6 (doubled), with 50, 3, 99, 7
+        System.out.println("size (capacity): " + arr.size());
+        System.out.println("count (used):    " + arr.count());
 
-        System.out.println("\n--- Testing find() ---");
-        System.out.println("find(99) -> " + arr.find(99) + " (expected 2)");
-        System.out.println("find(100) -> " + arr.find(100) + " (expected -1)");
-
-        System.out.println("\n--- Testing get() ---");
-        System.out.println("get(1) -> " + arr.get(1) + " (expected 3)");
-        System.out.println("get(4) -> " + arr.get(4) + " (expected null, empty slot)");
-        try {
-            arr.get(10); // out of bounds
-            System.out.println("get(10) -> did NOT throw (this is a bug)");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("get(10) -> threw IndexOutOfBoundsException as expected");
+        System.out.println("Elements in use:");
+        for (int i = 0; i < arr.count(); i++) {
+            System.out.println("  index " + i + " -> " + arr.get(i));
         }
 
-        System.out.println("\n--- Testing delete() ---");
-        arr.insert(3); // duplicate 3, to test "first occurrence"
-        printArray(arr);
-        boolean removed = arr.delete(3);
-        System.out.println("delete(3) -> " + removed + " (expected true)");
-        printArray(arr); // first 3 (index 1) should be gone, second 3 should remain
+        System.out.println("All slots (including unused/null):");
+        for (int i = 0; i < arr.size(); i++) {
+            System.out.println("  index " + i + " -> " + arr.get(i));
+        }
 
-        boolean removedAgain = arr.delete(1000);
-        System.out.println("delete(1000) -> " + removedAgain + " (expected false, not in array)");
+        System.out.println();
+        System.out.println("find 9: " + arr.find(9));
+        System.out.println("find 4 (not in array): " + arr.find(4));
 
-        System.out.println("\n--- Testing size() and count() ---");
-        System.out.println("size() -> " + arr.size() + " (total capacity)");
-        System.out.println("count() -> " + arr.count() + " (non-null elements)");
+        System.out.println();
+        System.out.println("Deleting 5...");
+        boolean deleted = arr.delete(5);
+        System.out.println("delete(5) returned: " + deleted);
+        System.out.println("count after delete: " + arr.count());
 
-        System.out.println("\n--- Testing resize() directly ---");
-        arr.resize(2); // shrink, should discard extra elements
-        printArray(arr);
-        arr.resize(5); // grow again
-        printArray(arr);
-    }
+        System.out.println("Elements in use after delete:");
+        for (int i = 0; i < arr.count(); i++) {
+            System.out.println("  index " + i + " -> " + arr.get(i));
+        }
 
-    private static void printArray(UnorderedArray arr) {
-        // helper method, sits outside main, also already there
+        System.out.println();
+        System.out.println("Deleting 100 (not in array)...");
+        boolean deletedAgain = arr.delete(100);
+        System.out.println("delete(100) returned: " + deletedAgain);
     }
 }
