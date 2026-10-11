@@ -1,19 +1,27 @@
-public class UnorderedArray {
+import java.util.Objects;
 
-    private Integer[] arr;
+public class UnorderedArray<T> {
+
+    private T[] arr;
     private int numItems;
 
-    // O(n): creates an array of size, all slots start as null
+    @SuppressWarnings("unchecked")
+    private T[] createArray(int size) {
+        return (T[]) new Object[size];
+    }
+
+    // O(n): creates an array of the requested size
     public UnorderedArray(int size) {
         if (size < 0) {
             throw new IllegalArgumentException("Size cannot be negative");
         }
-        arr = new Integer[size];
+
+        arr = createArray(size);
         numItems = 0;
     }
 
-    // O(1) average: drops x into the next free slot; O(n) worst case when resize() runs
-    public void insert(int x) {
+    // O(1) average; O(n) when resizing is needed
+    public void insert(T x) {
         if (numItems == arr.length) {
             resize(Math.max(1, arr.length * 2));
         }
@@ -22,10 +30,10 @@ public class UnorderedArray {
         numItems++;
     }
 
-    // O(n): scanning for x is O(n), and shifting the remaining elements left is O(n)
-    public boolean delete(int x) {
+    // O(n): finds and removes the first matching element
+    public boolean delete(T x) {
         for (int i = 0; i < numItems; i++) {
-            if (arr[i] == x) {
+            if (Objects.equals(arr[i], x)) {
                 for (int j = i; j < numItems - 1; j++) {
                     arr[j] = arr[j + 1];
                 }
@@ -35,44 +43,55 @@ public class UnorderedArray {
                 return true;
             }
         }
+
         return false;
     }
 
-    // O(n): unordered, so every slot may need checking with no shortcut
-    public int find(int x) {
+    // O(n): searches for the first matching element
+    public int find(T x) {
         for (int i = 0; i < numItems; i++) {
-            if (arr[i] == x) {
+            if (Objects.equals(arr[i], x)) {
                 return i;
             }
         }
+
         return -1;
     }
 
-    // O(1): array indexing jumps straight to the slot
-    public Integer get(int index) {
+    // O(1): retrieves an element by index
+    public T get(int index) {
         if (index < 0 || index >= arr.length) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+            throw new IndexOutOfBoundsException(
+                    "Index " + index + " is out of bounds"
+            );
         }
+
         return arr[index];
     }
 
-    // O(n): allocates a new array and copies up to min(numItems, newSize) elements over
+    // O(n): creates a new array and copies the elements
     public void resize(int newSize) {
-        Integer[] newArr = new Integer[newSize];
+        if (newSize < 0) {
+            throw new IllegalArgumentException("Size cannot be negative");
+        }
+
+        T[] newArr = createArray(newSize);
         int limit = Math.min(numItems, newSize);
+
         for (int i = 0; i < limit; i++) {
             newArr[i] = arr[i];
         }
+
         arr = newArr;
         numItems = limit;
     }
 
-    // O(1): arr.length is stored directly, no loop needed
+    // O(1): returns the array capacity
     public int size() {
         return arr.length;
     }
 
-    // O(n): no running counter used here, so every slot must be checked
+    // O(n): counts non-null elements, preserving the original behavior
     public int count() {
         int count = 0;
 

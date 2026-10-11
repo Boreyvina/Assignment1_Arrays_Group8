@@ -1,43 +1,81 @@
 public class Test_OrderedArray {
+
     public static void main(String[] args) {
-        OrderedArray o = new OrderedArray(2);
 
-        System.out.println("Inserting 5, 2, 9...");
-        o.insert(5);
-        o.insert(2);
-        o.insert(9);
+        // TEST 1: Integer
+        System.out.println("===== INTEGER TEST =====");
 
-        System.out.println("size (capacity): " + o.size());
-        System.out.println("count (used):    " + o.count());
+        OrderedArray<Integer> numbers = new OrderedArray<>(2);
 
-        System.out.println("Elements in use:");
-        for (int i = 0; i < o.count(); i++) {
-            System.out.println("  index " + i + " -> " + o.get(i));
+        numbers.insert(5);
+        numbers.insert(2);
+        numbers.insert(9);
+
+        System.out.println("Capacity: " + numbers.size());
+        System.out.println("Count: " + numbers.count());
+
+        for (int i = 0; i < numbers.count(); i++) {
+            System.out.println("Index " + i + " -> " + numbers.get(i));
         }
 
-        System.out.println("All slots (including unused/null):");
-        for (int i = 0; i < o.size(); i++) {
-            System.out.println("  index " + i + " -> " + o.get(i));
+        System.out.println("Find 9: " + numbers.find(9));
+        System.out.println("Find 4: " + numbers.find(4));
+
+        System.out.println("Delete 5: " + numbers.delete(5));
+
+        for (int i = 0; i < numbers.count(); i++) {
+            System.out.println("After deletion, index " + i
+                    + " -> " + numbers.get(i));
         }
 
-        System.out.println();
-        System.out.println("find 9: " + o.find(9));
-        System.out.println("find 4 (not in array): " + o.find(4));
+        System.out.println("Delete 100: " + numbers.delete(100));
 
+        // TEST 2: String
         System.out.println();
-        System.out.println("Deleting 5...");
-        boolean removed = o.delete(5);
-        System.out.println("delete(5) returned: " + removed);
-        System.out.println("count after delete: " + o.count());
+        System.out.println("===== STRING TEST =====");
 
-        System.out.println("Elements in use after delete:");
-        for (int i = 0; i < o.count(); i++) {
-            System.out.println("  index " + i + " -> " + o.get(i));
+        OrderedArray<String> names = new OrderedArray<>(2);
+
+        names.insert("Vina");
+        names.insert("Dara");
+        names.insert("Sok");
+
+        for (int i = 0; i < names.count(); i++) {
+            System.out.println("Name " + i + " -> " + names.get(i));
         }
 
+        System.out.println("Find Dara: " + names.find("Dara"));
+        System.out.println("Delete Dara: " + names.delete("Dara"));
+
+        // TEST 3: Double
         System.out.println();
-        System.out.println("Deleting 100 (not in array)...");
-        boolean removedMissing = o.delete(100);
-        System.out.println("delete(100) returned: " + removedMissing);
+        System.out.println("===== DOUBLE TEST =====");
+
+        OrderedArray<Double> prices = new OrderedArray<>(2);
+
+        prices.insert(5.5);
+        prices.insert(2.5);
+        prices.insert(8.0);
+
+        for (int i = 0; i < prices.count(); i++) {
+            System.out.println("Price " + i + " -> " + prices.get(i));
+        }
+
+        System.out.println("Find 8.0: " + prices.find(8.0));
+        System.out.println("Delete 5.5: " + prices.delete(5.5));
+
+        System.out.println("Final count: " + prices.count());
+        System.out.println();
+        System.out.println("===== STUDENT TEST =====");
+
+        OrderedArray<Student> students = new OrderedArray<>(2);
+        students.insert(new Student("Vina", 85));
+        students.insert(new Student("Dara", 95));
+        students.insert(new Student("Sok", 75));
+
+        for (int i = 0; i < students.count(); i++) {
+            System.out.println(students.get(i));
+        }
     }
+
 }

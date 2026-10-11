@@ -1,101 +1,128 @@
-public class OrderedArray {
+public class OrderedArray<T extends Comparable<? super T>> {
 
-    private Integer[] arr;
+    private T[] arr;
     private int count;
 
-    // O(n): creates an array of initialSize, all slots start as null
+    @SuppressWarnings("unchecked")
+    private T[] createArray(int size) {
+        return (T[]) new Comparable[size];
+    }
+
+    // O(n): creates an array of the requested size
     public OrderedArray(int initialSize) {
         if (initialSize < 0) {
-            throw new IllegalArgumentException("Size cannot be negative: " + initialSize);
+            throw new IllegalArgumentException(
+                    "Size cannot be negative: " + initialSize
+            );
         }
-        arr = new Integer[initialSize];
+
+        arr = createArray(initialSize);
         count = 0;
     }
 
-    // O(n): finding the spot is a simple scan, and shifting elements right to open a gap is O(n)
-    public void insert(int x) {
+    // O(n): inserts the element in ascending order
+    public void insert(T x) {
         if (count == arr.length) {
             resize(arr.length * 2 + 1);
         }
+
         int pos = 0;
-        while (pos < count && arr[pos] < x) {
+
+        while (pos < count && arr[pos].compareTo(x) < 0) {
             pos++;
         }
+
         for (int i = count; i > pos; i--) {
             arr[i] = arr[i - 1];
         }
+
         arr[pos] = x;
         count++;
     }
 
-    // O(n): find() is O(log n), but shifting elements left to close the gap is O(n)
-    public boolean delete(int x) {
+    // O(n): binary search followed by shifting elements
+    public boolean delete(T x) {
         int index = find(x);
+
         if (index == -1) {
             return false;
         }
+
         for (int i = index; i < count - 1; i++) {
             arr[i] = arr[i + 1];
         }
+
         arr[count - 1] = null;
         count--;
         return true;
     }
 
-    // O(log n): binary search cuts the search range in half each step
-    public int find(int x) {
+    // O(log n): binary search
+    public int find(T x) {
         int low = 0;
         int high = count - 1;
 
         while (low <= high) {
             int middle = low + (high - low) / 2;
-            if (arr[middle] == x) {
+            int comparison = arr[middle].compareTo(x);
+
+            if (comparison == 0) {
                 return middle;
             }
-            if (arr[middle] < x) {
+
+            if (comparison < 0) {
                 low = middle + 1;
             } else {
                 high = middle - 1;
             }
         }
+
         return -1;
     }
 
     // O(1): direct array access by index
-    public Integer get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= arr.length) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+            throw new IndexOutOfBoundsException(
+                    "Index " + index + " is out of bounds"
+            );
         }
+
         return arr[index];
     }
 
-    // O(1): just reads the array length
+    // O(1): returns the array capacity
     public int size() {
         return arr.length;
     }
 
-    // O(n): loops through every slot to count the non-null values
+    // O(n): counts non-null elements, preserving original behavior
     public int count() {
-        int count = 0;
+        int total = 0;
 
-        for (Integer value : arr) {
+        for (T value : arr) {
             if (value != null) {
-                count++;
+                total++;
             }
         }
-        return count;
+
+        return total;
     }
 
-    // O(n): copies up to newSize elements into a new array
+    // O(n): copies elements into a new array
     public void resize(int newSize) {
-        Integer[] newArr = new Integer[newSize];
+        if (newSize < 0) {
+            throw new IllegalArgumentException("Size cannot be negative");
+        }
+
+        T[] newArr = createArray(newSize);
         int limit = Math.min(count, newSize);
+
         for (int i = 0; i < limit; i++) {
             newArr[i] = arr[i];
         }
+
         arr = newArr;
         count = limit;
     }
-
-
 }
